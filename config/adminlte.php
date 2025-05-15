@@ -298,12 +298,17 @@ return [
     */
 
     'menu' => [
-        // Navbar items:
         [
             'text' => 'Kalkulator ASB',
             'url' => '/',
             'icon' => 'fas fa-fw fa-calculator',
             'can' => ['admin', 'user'],
+        ],
+        [
+            'text' => 'Ubah Password',
+            'url' => '/users/change-password',
+            'icon' => 'fas fa-fw fa-lock',
+            'can' => 'user',
         ],
         [
             'header' => 'Master Data',

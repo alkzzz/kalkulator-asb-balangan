@@ -1,12 +1,15 @@
 @extends('layouts.app')
 
-@section('subtitle', 'Kalkulator ASB')
-@section('content_header_title', 'Kalkulator ASB')
+@section('content_header_title', 'Selamat Datang, ' . auth()->user()->skpd->nama)
 
 @section('content_body')
     <div class="container-fluid py-4">
         <div class="row justify-content-center">
             <div class="col-lg-10 col-xl-8">
+
+                <div class="mb-3 text-muted">
+                    Silakan pilih ASB untuk mulai melakukan analisis standar belanja.
+                </div>
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-success text-white">
                         Analisis Standar Belanja (ASB)

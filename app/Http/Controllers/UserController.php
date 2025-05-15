@@ -91,4 +91,37 @@ class UserController extends Controller
         // Set session message untuk menunjukkan bahwa password telah direset
         return redirect()->route('users.index')->with('success', 'Password untuk ' . $user->username . ' telah berhasil direset menjadi 12345678');
     }
+
+    public function changePassword()
+    {
+        $user = auth()->user();
+        return view('users.change-password', compact('user'));
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $messages = [
+            'current_password.required' => 'Password saat ini wajib diisi.',
+            'new_password.required' => 'Password baru wajib diisi.',
+            'new_password.min' => 'Password baru minimal :min karakter.',
+            'new_password.confirmed' => 'Konfirmasi password baru tidak cocok.',
+        ];
+
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:8|confirmed',
+        ], $messages);
+
+        $user = auth()->user();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return redirect()->back()->withErrors(['current_password' => 'Password saat ini tidak valid.']);
+        }
+
+        $user->update([
+            'password' => Hash::make($request->new_password),
+        ]);
+
+        return redirect()->route('dashboard')->with('success', 'Password berhasil diperbarui');
+    }
 }

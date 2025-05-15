@@ -76,6 +76,8 @@ Route::middleware('auth')->group(function () {
         ->name('users.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::get('/change-password', 'changePassword')->name('change.password');
+            Route::post('/update-password', 'updatePassword')->name('update.password');
             Route::get('/create', 'create')->name('create');
             Route::post('/', 'store')->name('store');
             Route::get('/{user}/edit', 'edit')->name('edit');

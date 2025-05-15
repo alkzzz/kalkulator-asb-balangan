@@ -14,15 +14,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
-            'name' => 'Admin',
-            'username' => 'admin',
-            'email' => 'admin@agrobalangan.com',
-            'password' => bcrypt(12345678)
-        ]);
+        // User::factory()->create([
+        //     'name' => 'Admin',
+        //     'username' => 'admin',
+        //     'email' => 'admin@agrobalangan.com',
+        //     'password' => bcrypt(12345678)
+        // ]);
 
         $this->call([
-            SkpdSeeder::class,
+            SkpdUserSeeder::class,
             StrukturAsbSeeder::class,
             CostDriverSeeder::class,
             ObjekBelanjaSeeder::class,

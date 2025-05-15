@@ -26,7 +26,8 @@
                         <div id="cost-summary" class="my-3"></div>
                         <div id="cost-driver-inputs"></div>
 
-                        <button class="btn btn-danger w-100 mt-3 d-none" id="btn-hitung"><i class="fas fa-calculator"></i>
+                        <button class="btn btn-danger btn-lg w-100 mt-3 d-none" id="btn-hitung"><i
+                                class="fas fa-calculator"></i>
                             Hitung ASB
                         </button>
                     </div>
@@ -95,9 +96,11 @@
                     $inputs.html(`
                 <div class="alert alert-warning d-flex justify-content-between align-items-center">
                     <span>ASB ini belum memiliki variable cost atau cost driver.</span>
+                    @can('admin')
                     <a href="${opt.dataset.edit}" class="btn btn-sm btn-primary" style="text-decoration: none;">
                         <i class="fas fa-edit"></i> Edit ASB
                     </a>
+                    @endcan
                 </div>`);
                     return;
                 }

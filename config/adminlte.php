@@ -303,24 +303,38 @@ return [
             'text' => 'Kalkulator ASB',
             'url' => '/',
             'icon' => 'fas fa-fw fa-calculator',
+            'can' => ['admin', 'user'],
         ],
-        ['header' => 'Master Data'],
+        [
+            'header' => 'Master Data',
+            'can' => 'admin'
+        ],
         [
             'text' => 'Data SKPD',
             'url' => '/data-skpd',
             'icon' => 'fas fa-fw fa-building',
+            'can' => 'admin',
+        ],
+        [
+            'text' => 'Data User',
+            'url' => '/users',
+            'icon' => 'fas fa-fw fa-users',
+            'can' => 'admin',
         ],
         [
             'text' => 'Struktur ASB',
             'url' => 'struktur-asb',
             'icon' => 'fas fa-fw fa-chart-bar',
+            'can' => 'admin',
         ],
         [
             'text' => 'Objek Belanja',
             'url' => 'objek-belanja',
             'icon' => 'fas fa-fw fa-list-alt',
+            'can' => 'admin',
         ],
     ],
+
 
     /*
     |--------------------------------------------------------------------------

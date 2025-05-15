@@ -53,6 +53,13 @@
             </div>
         </form>
 
+        <button type="submit" form="form-asb" class="btn btn-success">
+            <i class="fas fa-save"></i> Simpan
+        </button>
+        <a href="{{ route('asb.index') }}" class="btn btn-danger">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </a>
+
         @if (isset($asb) && $asb->costDrivers->count())
             <hr>
             <div class="card mt-4 shadow-sm">
@@ -92,6 +99,7 @@
             </button>
         @endif
 
+        <hr>
         @if (isset($asb))
             <div class="card mt-4 shadow-sm">
                 <div class="table-responsive">
@@ -183,13 +191,6 @@
             </div>
         @endif
 
-        <hr>
-        <button type="submit" form="form-asb" class="btn btn-success">
-            <i class="fas fa-save"></i> Simpan
-        </button>
-        <a href="{{ route('asb.index') }}" class="btn btn-danger">
-            <i class="fas fa-arrow-left"></i> Kembali
-        </a>
     </div>
 
     @if (isset($asb))

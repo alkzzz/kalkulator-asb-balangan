@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('username')->unique();
             $table->string('email')->unique();
+            $table->string('role')->default('user');
+            $table->unsignedBigInteger('skpd_id')->nullable();
+            $table->foreign('skpd_id')->references('id')->on('skpd')->onDelete('set null');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

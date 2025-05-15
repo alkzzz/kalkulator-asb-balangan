@@ -19,6 +19,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'skpd_id',
+        'role',
         'username',
         'email',
         'password',
@@ -45,5 +47,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function skpd()
+    {
+        return $this->belongsTo(Skpd::class);
     }
 }

@@ -60,39 +60,43 @@
             <i class="fas fa-arrow-left"></i> Kembali
         </a>
 
-        @if (isset($asb) && $asb->costDrivers->count())
-            <hr>
-            <div class="card mt-4 shadow-sm">
-                <div class="card-header bg-primary d-flex justify-content-between align-items-center">
-                    <p class="mb-0 text-white">Cost Driver</p>
-                </div>
+        @if (isset($asb))
+            @if ($asb->costDrivers->count())
+                <hr>
+                <div class="card mt-4 shadow-sm">
+                    <div class="card-header bg-primary d-flex justify-content-between align-items-center">
+                        <p class="mb-0 text-white">Cost Driver</p>
+                    </div>
 
-                <div class="list-group list-group-flush">
-                    @foreach ($asb->costDrivers as $driver)
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>{{ $driver->label }}</span>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-warning btn-edit-driver mr-1"
-                                    data-label="{{ $driver->label }}"
-                                    data-action="{{ route('asb.cost-driver.update', [$asb->id, $driver->id]) }}"
-                                    data-method="PUT">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-
-                                <form action="{{ route('asb.cost-driver.destroy', [$asb->id, $driver->id]) }}"
-                                    method="POST" class="d-inline"
-                                    onsubmit="return confirm('Yakin ingin menghapus cost driver ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger">
-                                        <i class="fas fa-trash"></i>
+                    <div class="list-group list-group-flush">
+                        @foreach ($asb->costDrivers as $driver)
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>{{ $driver->label }}</span>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-warning btn-edit-driver mr-1"
+                                        data-label="{{ $driver->label }}"
+                                        data-action="{{ route('asb.cost-driver.update', [$asb->id, $driver->id]) }}"
+                                        data-method="PUT">
+                                        <i class="fas fa-edit"></i>
                                     </button>
-                                </form>
+
+                                    <form action="{{ route('asb.cost-driver.destroy', [$asb->id, $driver->id]) }}"
+                                        method="POST" class="d-inline"
+                                        onsubmit="return confirm('Yakin ingin menghapus cost driver ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 </div>
-            </div>
+            @else
+                <p class="text-muted">Belum ada cost driver.</p>
+            @endif
 
             <button type="button" class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#addDriverModal">
                 <i class="fas fa-plus"></i> Tambah Cost Driver

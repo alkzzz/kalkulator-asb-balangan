@@ -141,61 +141,63 @@
                     <i class="fas fa-plus"></i> Tambah Riwayat Belanja
                 </button>
             @endif
-        </div>
 
-        @if ($riwayat->count())
-            <div id="accordionRiwayat" class="mt-3">
-                @foreach ($riwayat as $tahun => $rows)
-                    @php
-                        $id = 'th' . $tahun;
-                        $tot = number_format($rows->sum('persentase'), 2, '.', '.');
-                    @endphp
+            @if ($riwayat->count())
+                <div id="accordionRiwayat" class="mt-3">
+                    @foreach ($riwayat as $tahun => $rows)
+                        @php
+                            $id = 'th' . $tahun;
+                            $tot = number_format($rows->sum('persentase'), 2, '.', '.');
+                        @endphp
 
-                    <div class="card mb-1">
-                        <div class="card-header d-flex justify-content-between align-items-center px-2 py-1"
-                            id="h{{ $id }}">
-                            <button class="btn btn-link text-left flex-grow-1 pl-1" data-toggle="collapse"
-                                data-target="#c{{ $id }}">
-                                Riwayat Tahun {{ $tahun }}
-                            </button>
-                            <form action="{{ route('asb.riwayat.destroy.tahun', [$asb->id, $tahun]) }}" method="POST"
-                                onsubmit="return confirm('Yakin ingin menghapus SEMUA riwayat tahun {{ $tahun }}?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger me-2">
-                                    <i class="fas fa-trash"></i> Hapus
+                        <div class="card mb-1">
+                            <div class="card-header d-flex justify-content-between align-items-center px-2 py-1"
+                                id="h{{ $id }}">
+                                <button class="btn btn-link text-left flex-grow-1 pl-1" data-toggle="collapse"
+                                    data-target="#c{{ $id }}">
+                                    Riwayat Tahun {{ $tahun }}
                                 </button>
-                            </form>
-                        </div>
+                                <form action="{{ route('asb.riwayat.destroy.tahun', [$asb->id, $tahun]) }}"
+                                    method="POST"
+                                    onsubmit="return confirm('Yakin ingin menghapus SEMUA riwayat tahun {{ $tahun }}?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger me-2">
+                                        <i class="fas fa-trash"></i> Hapus
+                                    </button>
+                                </form>
+                            </div>
 
-                        <div id="c{{ $id }}" class="collapse" data-parent="#accordionRiwayat">
-                            <div class="card-body p-0">
-                                <table class="table table-sm table-bordered mb-0">
-                                    <thead class="bg-light text-center">
-                                        <tr>
-                                            <th style="width:50px">No</th>
-                                            <th>Objek Belanja</th>
-                                            <th style="width:120px">Persen&nbsp;(%)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($rows as $i => $r)
+                            <div id="c{{ $id }}" class="collapse" data-parent="#accordionRiwayat">
+                                <div class="card-body p-0">
+                                    <table class="table table-sm table-bordered mb-0">
+                                        <thead class="bg-light text-center">
                                             <tr>
-                                                <td class="text-center">{{ $i + 1 }}</td>
-                                                <td>{{ $r->objekBelanja->nama_objek }}</td>
-                                                <td class="text-end">
-                                                    {{ number_format($r->persentase, 2, '.', '.') }}%
-                                                </td>
+                                                <th style="width:50px">No</th>
+                                                <th>Objek Belanja</th>
+                                                <th style="width:120px">Persen&nbsp;(%)</th>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($rows as $i => $r)
+                                                <tr>
+                                                    <td class="text-center">{{ $i + 1 }}</td>
+                                                    <td>{{ $r->objekBelanja->nama_objek }}</td>
+                                                    <td class="text-end">
+                                                        {{ number_format($r->persentase, 2, '.', '.') }}%
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
-            </div>
-        @endif
+                    @endforeach
+                </div>
+            @endif
+
+        </div>
 
     </div>
 

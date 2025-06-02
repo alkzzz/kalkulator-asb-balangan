@@ -7,6 +7,7 @@ use App\Http\Controllers\CostDriverController;
 use App\Http\Controllers\SKPDController;
 use App\Http\Controllers\ObjekBelanjaController;
 use App\Http\Controllers\KalkulatorASBController;
+use App\Http\Controllers\RiwayatBelanjaController;
 use App\Http\Controllers\UserController;
 
 Auth::routes();
@@ -42,9 +43,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/{id}/edit', 'edit')->name('edit');
             Route::put('/{id}', 'update')->name('update');
             Route::delete('/{id}', 'destroy')->name('destroy');
+            Route::get('asb-options', 'getOptions')->name('options');
             Route::post('/{asb}/riwayat', 'riwayatStore')->name('riwayat.store');
             Route::delete('/{asb}/riwayat/{tahun}', 'riwayatDestroyTahun')->name('riwayat.destroy.tahun');
-            Route::get('asb-options', 'getOptions')->name('options');
         });
 
     Route::prefix('struktur-asb/{struktur_asb}')
@@ -84,5 +85,19 @@ Route::middleware('auth')->group(function () {
             Route::put('/{user}', 'update')->name('update');
             Route::delete('/{user}', 'destroy')->name('destroy');
             Route::get('/{user}/reset-password', 'resetPassword')->name('resetPassword');
+        });
+
+    Route::controller(RiwayatBelanjaController::class)
+        ->middleware(['auth'])
+        ->prefix('riwayat-belanja')
+        ->name('riwayat-belanja.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/', 'store')->name('store');
+            Route::get('/{riwayat}/{tahun}', 'show')->name('show');
+            Route::get('/{riwayat}/edit', 'edit')->name('edit');
+            Route::put('/{riwayat}', 'update')->name('update');
+            Route::delete('/{riwayat}', 'destroy')->name('destroy');
         });
 });

@@ -104,42 +104,44 @@
         @endif
 
         <hr>
-        @if (isset($asb))
-            <div class="card mt-4 shadow-sm">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-sm mb-0">
-                        <thead class="bg-warning text-center">
-                            <tr>
-                                <th style="width:40px">No</th>
-                                <th>Objek Belanja</th>
-                                <th style="width:15%">Rata-rata&nbsp;(%)</th>
-                                <th style="width:15%">Batas Atas&nbsp;(%)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($summary as $i => $row)
+        <div style="display: none">
+            @if (isset($asb))
+                <div class="card mt-4 shadow-sm">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm mb-0">
+                            <thead class="bg-warning text-center">
                                 <tr>
-                                    <td class="text-center">{{ $i + 1 }}</td>
-                                    <td>{{ $row['objek'] }}</td>
-                                    <td class="text-end">{{ number_format($row['avg_pct'], 2, '.', '.') }}%</td>
-                                    <td class="text-end">{{ number_format($row['limit_pct'], 2, '.', '.') }}%</td>
+                                    <th style="width:40px">No</th>
+                                    <th>Objek Belanja</th>
+                                    <th style="width:15%">Rata-rata&nbsp;(%)</th>
+                                    <th style="width:15%">Batas Atas&nbsp;(%)</th>
                                 </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="4" class="text-center text-muted">
-                                        Belum ada data riwayat objek belanja
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @forelse($summary as $i => $row)
+                                    <tr>
+                                        <td class="text-center">{{ $i + 1 }}</td>
+                                        <td>{{ $row['objek'] }}</td>
+                                        <td class="text-end">{{ number_format($row['avg_pct'], 2, '.', '.') }}%</td>
+                                        <td class="text-end">{{ number_format($row['limit_pct'], 2, '.', '.') }}%</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted">
+                                            Belum ada data riwayat objek belanja
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
 
-            <button class="btn btn-sm btn-warning mb-2 mt-2" data-toggle="modal" data-target="#modalRiwayat">
-                <i class="fas fa-plus"></i> Tambah Riwayat Belanja
-            </button>
-        @endif
+                <button class="btn btn-sm btn-warning mb-2 mt-2" data-toggle="modal" data-target="#modalRiwayat">
+                    <i class="fas fa-plus"></i> Tambah Riwayat Belanja
+                </button>
+            @endif
+        </div>
 
         @if ($riwayat->count())
             <div id="accordionRiwayat" class="mt-3">

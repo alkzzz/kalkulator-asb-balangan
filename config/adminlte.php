@@ -305,6 +305,12 @@ return [
             'can' => ['admin', 'user'],
         ],
         [
+            'text' => 'Riwayat Belanja',
+            'url' => '/riwayat-belanja',
+            'icon' => 'fas fa-fw fa-file-invoice-dollar',
+            'can' => ['admin', 'user'],
+        ],
+        [
             'text' => 'Ubah Password',
             'url' => '/users/change-password',
             'icon' => 'fas fa-fw fa-lock',

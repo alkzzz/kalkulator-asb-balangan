@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\StrukturASB;
-use App\Models\AsbObjekTahun;
+use App\Models\RiwayatBelanja;
 use App\Models\ObjekBelanja;
 
 class KalkulatorASBController extends Controller
 {
     public function index()
     {
-        $asbList = StrukturASB::with('costDrivers')->orderBy('kode')->get();
+        $asbList = StrukturASB::with('costDrivers')->orderByRaw('CAST(kode AS UNSIGNED)')->get();
         return view('asb.kalkulator', compact('asbList'));
     }
 
@@ -67,30 +67,26 @@ class KalkulatorASBController extends Controller
 
     private function ringkasanPersen(int $asbId)
     {
-        $years = AsbObjekTahun::where('asb_id', $asbId)
-            ->pluck('tahun')->unique()->sort()->values();
-        $Y = max($years->count(), 1);
+        $riwayat = RiwayatBelanja::where('asb_id', $asbId)->get();
 
-        $rows = AsbObjekTahun::where('asb_id', $asbId)->get();
-        $objeks = ObjekBelanja::whereIn('id', $rows->pluck('objek_belanja_id')->unique())
-            ->get()->keyBy('id');
+        $grouped = $riwayat->groupBy('objek_belanja_id');
+        $objeks = ObjekBelanja::whereIn('id', $grouped->keys())->get()->keyBy('id');
 
-        $out = collect();
-        foreach ($objeks as $id => $obj) {
-            $data = $years->map(
-                fn($th) =>
-                $rows->first(fn($r) => $r->objek_belanja_id == $id && $r->tahun == $th)->persentase ?? 0
-            )->all();
-            $avg = array_sum($data) / $Y;
-            $sd  = $Y > 1
-                ? sqrt(array_sum(array_map(fn($v) => ($v - $avg) ** 2, $data)) / ($Y - 1))
-                : 0;
-            $out->push([
-                'objek'     => $obj->nama_objek,
-                'avg_pct'   => round($avg, 2),
-                'limit_pct' => round(min($avg + $sd, 100), 2),
+        $result = collect();
+
+        foreach ($grouped as $objekId => $items) {
+            $values = $items->pluck('persentase')->all();
+            $n = count($values);
+            $avg = array_sum($values) / $n;
+            $sd = $n > 1 ? sqrt(array_sum(array_map(fn($v) => pow($v - $avg, 2), $values)) / ($n - 1)) : 0;
+
+            $result->push([
+                'objek'      => $objeks[$objekId]->nama_objek ?? 'Tidak ditemukan',
+                'avg_pct'    => round($avg, 2),
+                'limit_pct'  => round($avg + $sd, 2),
             ]);
         }
-        return $out;
+
+        return $result;
     }
 }

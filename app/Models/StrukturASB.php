@@ -25,4 +25,9 @@ class StrukturASB extends Model
     {
         return $this->hasMany(AsbObjekTahun::class, 'asb_id');
     }
+
+    public function riwayatBelanja()
+    {
+        return $this->hasMany(RiwayatBelanja::class, 'asb_id');
+    }
 }

@@ -80,12 +80,11 @@
                                         <i class="fas fa-edit"></i>
                                     </button>
 
-                                    <form action="{{ route('asb.cost-driver.destroy', [$asb->id, $driver->id]) }}"
-                                        method="POST" class="d-inline"
-                                        onsubmit="return confirm('Yakin ingin menghapus cost driver ini?')">
+                                    <form class="form-delete-driver d-inline"
+                                        data-action="{{ route('asb.cost-driver.destroy', [$asb->id, $driver->id]) }}">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger">
+                                        <button type="button" class="btn btn-sm btn-danger btn-delete-driver">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
@@ -102,103 +101,6 @@
                 <i class="fas fa-plus"></i> Tambah Cost Driver
             </button>
         @endif
-
-        <hr>
-        <div style="display: none">
-            @if (isset($asb))
-                <div class="card mt-4 shadow-sm">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-sm mb-0">
-                            <thead class="bg-warning text-center">
-                                <tr>
-                                    <th style="width:40px">No</th>
-                                    <th>Objek Belanja</th>
-                                    <th style="width:15%">Rata-rata&nbsp;(%)</th>
-                                    <th style="width:15%">Batas Atas&nbsp;(%)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($summary as $i => $row)
-                                    <tr>
-                                        <td class="text-center">{{ $i + 1 }}</td>
-                                        <td>{{ $row['objek'] }}</td>
-                                        <td class="text-end">{{ number_format($row['avg_pct'], 2, '.', '.') }}%</td>
-                                        <td class="text-end">{{ number_format($row['limit_pct'], 2, '.', '.') }}%</td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="4" class="text-center text-muted">
-                                            Belum ada data riwayat objek belanja
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <button class="btn btn-sm btn-warning mb-2 mt-2" data-toggle="modal" data-target="#modalRiwayat">
-                    <i class="fas fa-plus"></i> Tambah Riwayat Belanja
-                </button>
-            @endif
-
-            @if ($riwayat->count())
-                <div id="accordionRiwayat" class="mt-3">
-                    @foreach ($riwayat as $tahun => $rows)
-                        @php
-                            $id = 'th' . $tahun;
-                            $tot = number_format($rows->sum('persentase'), 2, '.', '.');
-                        @endphp
-
-                        <div class="card mb-1">
-                            <div class="card-header d-flex justify-content-between align-items-center px-2 py-1"
-                                id="h{{ $id }}">
-                                <button class="btn btn-link text-left flex-grow-1 pl-1" data-toggle="collapse"
-                                    data-target="#c{{ $id }}">
-                                    Riwayat Tahun {{ $tahun }}
-                                </button>
-                                <form action="{{ route('asb.riwayat.destroy.tahun', [$asb->id, $tahun]) }}"
-                                    method="POST"
-                                    onsubmit="return confirm('Yakin ingin menghapus SEMUA riwayat tahun {{ $tahun }}?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger me-2">
-                                        <i class="fas fa-trash"></i> Hapus
-                                    </button>
-                                </form>
-                            </div>
-
-                            <div id="c{{ $id }}" class="collapse" data-parent="#accordionRiwayat">
-                                <div class="card-body p-0">
-                                    <table class="table table-sm table-bordered mb-0">
-                                        <thead class="bg-light text-center">
-                                            <tr>
-                                                <th style="width:50px">No</th>
-                                                <th>Objek Belanja</th>
-                                                <th style="width:120px">Persen&nbsp;(%)</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($rows as $i => $r)
-                                                <tr>
-                                                    <td class="text-center">{{ $i + 1 }}</td>
-                                                    <td>{{ $r->objekBelanja->nama_objek }}</td>
-                                                    <td class="text-end">
-                                                        {{ number_format($r->persentase, 2, '.', '.') }}%
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            @endif
-
-        </div>
-
     </div>
 
     @if (isset($asb))
@@ -213,8 +115,7 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label for="new_driver_label">Nama Variabel</label>
-                                <input type="text" name="label" id="new_driver_label" class="form-control"
-                                    required>
+                                <input type="text" name="label" id="new_driver_label" class="form-control" required>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -248,186 +149,20 @@
                 </form>
             </div>
         </div>
-
-        @php
-            $tahunSekarang = now()->year;
-            $tahunTerpakai = isset($asb) ? $asb->objekTahunan->pluck('tahun')->unique()->toArray() : [];
-
-            // ambil old input jika validasi gagal
-            $oldTahun = old('tahun');
-            $oldObjs = old('objek_belanja_id', []);
-            $oldPcts = old('persentase', []);
-        @endphp
-
-        <div class="modal fade" id="modalRiwayat">
-            <div class="modal-dialog modal-lg">
-                <form action="{{ route('asb.riwayat.store', $asb->id) }}" method="POST" id="riwayatForm">
-                    @csrf
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Tambah Riwayat Belanja</h5>
-                        </div>
-
-                        <div class="modal-body">
-                            {{-- error messages --}}
-                            @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    @foreach ($errors->all() as $err)
-                                        <div>{{ $err }}</div>
-                                    @endforeach
-                                </div>
-                            @endif
-
-                            <div class="form-group">
-                                <label>Tahun</label>
-                                <select name="tahun" class="form-control" required>
-                                    <option value="" disabled {{ $oldTahun ? '' : 'selected' }}>Pilih tahun…
-                                    </option>
-                                    @for ($th = 2020; $th < $tahunSekarang; $th++)
-                                        @continue(in_array($th, $tahunTerpakai) && $th != $oldTahun)
-                                        <option value="{{ $th }}" {{ $oldTahun == $th ? 'selected' : '' }}>
-                                            {{ $th }}
-                                        </option>
-                                    @endfor
-                                </select>
-                            </div>
-
-                            <table class="table table-sm table-bordered" id="tblInput">
-                                <thead class="bg-light text-center">
-                                    <tr>
-                                        <th style="width:40px">No</th>
-                                        <th>Objek Belanja</th>
-                                        <th style="width:140px">Persentase (%)</th>
-                                        <th style="width:60px">
-                                            <button type="button" class="btn btn-sm btn-primary"
-                                                id="addRow">+</button>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button class="btn btn-success">Simpan</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        @push('js')
-            <script>
-                (function() {
-                    const objekOptions = @json($objekBelanja->map(fn($o) => ['id' => $o->id, 'nama' => $o->nama_objek]));
-                    const tbody = document.getElementById('tblInput').querySelector('tbody');
-                    const addRowBtn = document.getElementById('addRow');
-
-                    function refreshObjekSelects() {
-                        const used = Array.from(
-                            document.querySelectorAll('select[name="objek_belanja_id[]"]')
-                        ).map(s => s.value).filter(v => v);
-
-                        document.querySelectorAll('select[name="objek_belanja_id[]"]').forEach(sel => {
-                            const current = sel.value;
-                            sel.innerHTML = objekOptions
-                                .filter(o => o.id == current || !used.includes(o.id.toString()))
-                                .map(o =>
-                                    `<option value="${o.id}" ${o.id==current?'selected':''}>${o.nama}</option>`
-                                ).join('');
-                        });
-                    }
-
-                    function addRow(selObj = '', valPct = '') {
-                        const idx = tbody.children.length + 1;
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-              <td class="text-center row-no">${idx}</td>
-              <td>
-                <select name="objek_belanja_id[]" class="form-control" required></select>
-              </td>
-              <td>
-                <input type="number" name="persentase[]" step="0.01"
-                       class="form-control" placeholder="0.00"
-                       value="${valPct}" required>
-              </td>
-              <td class="text-center">
-                <button type="button" class="btn btn-sm btn-danger btn-del">–</button>
-              </td>`;
-                        tbody.appendChild(tr);
-
-                        refreshObjekSelects();
-                        if (selObj) {
-                            // pilihkan setelah opsi ter-refresh
-                            tr.querySelector('select').value = selObj;
-                            refreshObjekSelects();
-                        }
-                    }
-
-                    // tambahkan baris baru
-                    addRowBtn.addEventListener('click', () => addRow());
-
-                    // hapus baris
-                    tbody.addEventListener('click', e => {
-                        if (e.target.matches('.btn-del')) {
-                            e.target.closest('tr').remove();
-                            Array.from(tbody.children).forEach((r, i) => r.querySelector('.row-no').textContent = i +
-                                1);
-                            refreshObjekSelects();
-                        }
-                    });
-
-                    // ketika salah satu select berubah
-                    tbody.addEventListener('change', e => {
-                        if (e.target.matches('select[name="objek_belanja_id[]"]')) {
-                            refreshObjekSelects();
-                        }
-                    });
-
-                    // saat modal muncul, bangun ulang dari old() atau satu baris default
-                    $('#modalRiwayat').on('shown.bs.modal', () => {
-                        tbody.innerHTML = '';
-                        const oldObjs = @json(old('objek_belanja_id', []));
-                        const oldPcts = @json(old('persentase', []));
-                        if (oldObjs.length) {
-                            oldObjs.forEach((o, i) => addRow(o, oldPcts[i] ?? ''));
-                        } else {
-                            addRow();
-                        }
-                    });
-
-                    // otomatis buka modal jika ada error
-                    @if ($errors->any())
-                        $('#modalRiwayat').modal('show');
-                    @endif
-
-                })();
-            </script>
-        @endpush
-
     @endif
 @endsection
 
 @push('js')
     <script>
-        document.querySelectorAll('.rupiah-input').forEach(i => {
-            i.addEventListener('input', e => {
-                const v = e.target.value.replace(/\D/g, '');
-                e.target.value = v ? new Intl.NumberFormat('id-ID').format(v) : '';
-            });
-            i.closest('form').addEventListener('submit', () => {
-                document.querySelectorAll('.rupiah-input').forEach(inp => {
-                    inp.value = inp.value.replace(/\./g, '').replace(/,/g, '');
-                });
-            });
-        });
-
         function openDriverModal(label = '', action = '#', method = 'POST') {
             const form = document.getElementById('editDriverForm');
             form.action = action;
+
+            // Hapus spoof _method sebelumnya jika ada
             let spoof = form.querySelector('input[name="_method"]');
             if (spoof) spoof.remove();
+
+            // Tambahkan spoof _method jika bukan POST
             if (method.toUpperCase() !== 'POST') {
                 spoof = document.createElement('input');
                 spoof.type = 'hidden';
@@ -435,16 +170,56 @@
                 spoof.value = method.toUpperCase();
                 form.appendChild(spoof);
             }
+
             document.getElementById('driver_label').value = label;
             $('#editDriverModal').modal('show');
         }
 
-        document.querySelectorAll('.btn-edit-driver').forEach(btn => {
-            btn.addEventListener('click', () => openDriverModal(
-                btn.dataset.label,
-                btn.dataset.action,
-                btn.dataset.method
-            ));
+        document.addEventListener('DOMContentLoaded', () => {
+            // Handle tombol edit
+            document.querySelectorAll('.btn-edit-driver').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    openDriverModal(
+                        this.dataset.label,
+                        this.dataset.action,
+                        this.dataset.method
+                    );
+                });
+            });
+
+            // Handle tombol delete + SweetAlert
+            document.querySelectorAll('.btn-delete-driver').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const form = this.closest('.form-delete-driver');
+                    const action = form.getAttribute('data-action');
+                    const csrfToken = form.querySelector('input[name="_token"]').value;
+
+                    Swal.fire({
+                        title: 'Hapus Data?',
+                        text: "Data yang dihapus tidak dapat dikembalikan!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Ya, hapus!',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            const tempForm = document.createElement('form');
+                            tempForm.method = 'POST';
+                            tempForm.action = action;
+
+                            tempForm.innerHTML = `
+                                <input type="hidden" name="_token" value="${csrfToken}">
+                                <input type="hidden" name="_method" value="DELETE">
+                            `;
+
+                            document.body.appendChild(tempForm);
+                            tempForm.submit();
+                        }
+                    });
+                });
+            });
         });
     </script>
 @endpush

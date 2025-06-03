@@ -95,7 +95,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('create');
             Route::post('/', 'store')->name('store');
-            Route::get('/{riwayat}/{tahun}', 'show')->name('show');
+            Route::get('/detail/{asb}/{tahun}', 'show')->name('show');
             Route::get('/{riwayat}/edit', 'edit')->name('edit');
             Route::put('/{riwayat}', 'update')->name('update');
             Route::delete('/{riwayat}', 'destroy')->name('destroy');

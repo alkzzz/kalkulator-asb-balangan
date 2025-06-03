@@ -13,7 +13,7 @@ class RiwayatBelanjaController extends Controller
 {
     public function index(Request $request)
     {
-        $asbList = StrukturAsb::orderByRaw('CAST(kode AS UNSIGNED)')->get();
+        $asbList = StrukturASB::orderByRaw('CAST(kode AS UNSIGNED)')->get();
         $selectedAsb = $request->get('asb_id', 1);
 
         $riwayatTahunan = collect();
@@ -54,7 +54,7 @@ class RiwayatBelanjaController extends Controller
             'title'         => 'Tambah Riwayat Belanja',
             'action'        => route('riwayat-belanja.store'),
             'method'        => 'POST',
-            'asbList'       => StrukturAsb::orderByRaw('CAST(kode AS UNSIGNED)')->get(),
+            'asbList'       => StrukturASB::orderByRaw('CAST(kode AS UNSIGNED)')->get(),
             'objekBelanja'  => ObjekBelanja::orderBy('nama_objek')->get(),
             'riwayat'       => new RiwayatBelanja(['asb_id' => $asbId]),
             'tahunTersedia' => $tahunTersedia,
@@ -89,7 +89,7 @@ class RiwayatBelanjaController extends Controller
 
     public function show($asbId, $tahun)
     {
-        $asb = StrukturAsb::findOrFail($asbId);
+        $asb = StrukturASB::findOrFail($asbId);
 
         $riwayatList = RiwayatBelanja::with('objekBelanja')
             ->where('asb_id', $asbId)
@@ -108,7 +108,7 @@ class RiwayatBelanjaController extends Controller
             'title'        => 'Edit Riwayat Belanja',
             'action'       => route('riwayat_belanja.update', $riwayat->id),
             'method'       => 'PUT',
-            'asbList'      => StrukturAsb::orderByRaw('CAST(kode AS UNSIGNED)')->get(),
+            'asbList'      => StrukturASB::orderByRaw('CAST(kode AS UNSIGNED)')->get(),
             'objekBelanja' => ObjekBelanja::orderBy('nama_objek')->get(),
             'riwayat'      => $riwayat
         ]);

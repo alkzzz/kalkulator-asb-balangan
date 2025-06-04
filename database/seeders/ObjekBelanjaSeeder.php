@@ -15,8 +15,8 @@ class ObjekBelanjaSeeder extends Seeder
     {
         $namaList = [
             'Belanja Alat/Bahan untuk Kegiatan Kantor-Alat Tulis Kantor',
-            'Belanja Alat/Bahan untuk Kegiatan Kantor- Kertas dan Cover',
-            'Belanja Alat/Bahan untuk Kegiatan Kantor- Suvenir/Cendera Mata',
+            'Belanja Alat/Bahan untuk Kegiatan Kantor-Kertas dan Cover',
+            'Belanja Alat/Bahan untuk Kegiatan Kantor-Suvenir/Cendera Mata',
             'Belanja Alat/Bahan untuk Kegiatan Kantor-Bahan Komputer',
             'Belanja Alat/Bahan untuk Kegiatan Kantor-Persediaan Dokumen/Administrasi Tender',
             'Belanja Alat/Bahan untuk Kegiatan Kantor-Alat/Bahan untuk Kegiatan Kantor Lainnya',
@@ -33,6 +33,13 @@ class ObjekBelanjaSeeder extends Seeder
             'Honorarium Narasumber atau Pembahas, Moderator, Pembawa Acara, dan Panitia',
             'Belanja Honorarium Penanggungjawaban Pengelola Keuangan',
             'Belanja Honorarium Pengadaan Barang/Jasa',
+            // Item baru dari data gambar ditambahkan di bawah:
+            'Belanja Alat/Bahan untuk Kegiatan Kantor-Bahan Cetak',
+            'Belanja Alat/Bahan untuk Kegiatan Kantor-Benda Pos',
+            'Belanja Jasa Tenaga Administrasi',
+            'Belanja Jasa Tenaga Ahli',
+            'Belanja Jasa Konversi Aplikasi/Sistem Informasi',
+            'Belanja Pemeliharaan Aset Tidak Berwujud-Software',
         ];
 
         DB::statement('SET FOREIGN_KEY_CHECKS=0');

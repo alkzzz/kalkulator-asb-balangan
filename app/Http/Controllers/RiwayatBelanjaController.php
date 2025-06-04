@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\RiwayatBelanja;
 use App\Models\Skpd;
-use App\Models\StrukturAsb;
+use App\Models\StrukturASB;
 use App\Models\ObjekBelanja;
 use Illuminate\Support\Facades\DB;
 

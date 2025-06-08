@@ -55,7 +55,7 @@
     </div>
 
     <strong>
-        <a href="#" style="color: green">Kalkulator ASB Kabupaten Balangan</a>
+        <a href="#" style="color: green">ASB-SK Kabupaten Balangan</a>
     </strong>
 @stop
 

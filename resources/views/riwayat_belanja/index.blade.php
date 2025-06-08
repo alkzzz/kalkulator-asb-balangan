@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content_header_title', 'Selamat Datang, ' . auth()->user()->skpd->nama)
+@section('content_header_title', 'Data Riwayat Belanja: ' . auth()->user()->skpd->nama)
 
 @section('content_body')
     <div class="container-fluid py-4">
@@ -31,8 +31,10 @@
                 </div>
 
                 @if ($selectedAsb)
-                    <!-- Tombol Tambah -->
-                    <div class="mb-3 text-right">
+                    <div class="mb-3 d-flex justify-content-between">
+                        <a href="{{ route('riwayat-belanja.trend', ['asb' => $selectedAsb]) }}" class="btn btn-info">
+                            <i class="fas fa-chart-line"></i> Lihat Tren Riwayat Belanja
+                        </a>
                         <a href="{{ route('riwayat-belanja.create', ['asb_id' => $selectedAsb]) }}" class="btn btn-primary">
                             <i class="fas fa-plus"></i> Tambah Riwayat Belanja
                         </a>
@@ -89,7 +91,6 @@
 @endsection
 
 @push('js')
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(function() {
             $('.select2').select2({

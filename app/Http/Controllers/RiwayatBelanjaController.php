@@ -153,4 +153,37 @@ class RiwayatBelanjaController extends Controller
             abort(403, 'Akses ditolak.');
         }
     }
+
+    public function trend($asb)
+    {
+        $asbData = StrukturASB::findOrFail($asb);
+        $asbList = StrukturASB::with('costDrivers')->orderByRaw('CAST(kode AS UNSIGNED)')->get();
+
+        $riwayatTahunan = RiwayatBelanja::where('asb_id', $asb)
+            ->select(
+                'tahun',
+                \DB::raw('SUM(nilai_rupiah) as total_rupiah'),
+                \DB::raw('AVG(persentase) as avg_persentase')
+            )
+            ->groupBy('tahun')
+            ->orderBy('tahun')
+            ->get();
+
+        $perObjek = RiwayatBelanja::where('asb_id', $asb)
+            ->select(
+                'objek_belanja_id',
+                'tahun',
+                \DB::raw('SUM(nilai_rupiah) as total_nilai'),
+                \DB::raw('AVG(persentase) as avg_persen')
+            )
+            ->groupBy('objek_belanja_id', 'tahun')
+            ->orderBy('tahun')
+            ->get()
+            ->groupBy('objek_belanja_id');
+
+        $objekList = ObjekBelanja::whereIn('id', $perObjek->keys())->get()->keyBy('id');
+
+
+        return view('riwayat_belanja.trend', compact('asbData', 'riwayatTahunan', 'asbList', 'perObjek', 'objekList'));
+    }
 }

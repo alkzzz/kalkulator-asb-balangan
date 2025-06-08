@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'Kalkulator ASB Balangan',
+    'title' => 'ASB-SK Balangan',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => 'Kalkulator ASB',
+    'logo' => 'ASB-SK',
     'logo_img' => 'images/logo_balangan.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,

@@ -134,6 +134,7 @@ class ASBController extends Controller
             'asb' => null,
             'summary' => collect(),
             'objekBelanja' => $objekBelanja,
+            'riwayat' => collect(),
         ]);
     }
 

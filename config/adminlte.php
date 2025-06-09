@@ -308,7 +308,7 @@ return [
             'text' => 'Ubah Password',
             'url' => '/users/change-password',
             'icon' => 'fas fa-fw fa-lock',
-            'can' => 'user',
+            'can' => ['admin', 'user'],
         ],
         [
             'header' => 'Master Data',

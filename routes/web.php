@@ -8,6 +8,7 @@ use App\Http\Controllers\SKPDController;
 use App\Http\Controllers\ObjekBelanjaController;
 use App\Http\Controllers\KalkulatorASBController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BukuManualController;
 
 Auth::routes();
 
@@ -84,5 +85,15 @@ Route::middleware('auth')->group(function () {
             Route::put('/{user}', 'update')->name('update');
             Route::delete('/{user}', 'destroy')->name('destroy');
             Route::get('/{user}/reset-password', 'resetPassword')->name('resetPassword');
+        });
+
+    Route::controller(BukuManualController::class)
+        ->group(function () {
+            // Admin: Upload Buku Manual
+            Route::get('upload-buku-panduan', 'create')->name('buku-manual.upload.form');
+            Route::post('upload-buku-panduan', 'store')->name('buku-manual.upload');
+
+            // User: View Buku Manual
+            Route::get('buku-panduan', 'index')->name('buku-manual.index');
         });
 });

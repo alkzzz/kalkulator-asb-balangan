@@ -338,6 +338,22 @@ return [
             'icon' => 'fas fa-fw fa-list-alt',
             'can' => 'admin',
         ],
+        [
+            'header' => 'Administrasi',
+            'can' => 'admin'
+        ],
+        [
+            'text' => 'Upload Buku Panduan',
+            'url' => 'upload-buku-panduan',
+            'icon' => 'fas fa-fw fa-book',
+            'can' => 'admin',
+        ],
+        [
+            'text' => 'Buku Panduan',
+            'url' => 'buku-panduan',
+            'icon' => 'fas fa-fw fa-book',
+            'can' => 'user',
+        ],
     ],
 
 

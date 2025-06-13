@@ -9,7 +9,7 @@
         @if (!empty($existingFile))
             <div class="mb-3">
                 <label>File Saat Ini:</label><br>
-                <a href="{{ asset('storage/manuals/buku-panduan-user-asb-sk.pdf') }}" target="_blank">
+                <a href="{{ asset('buku-panduan-user-asb-sk.pdf') }}" target="_blank">
                     <i class="fas fa-file-pdf"></i> Lihat Buku Panduan
                 </a>
             </div>

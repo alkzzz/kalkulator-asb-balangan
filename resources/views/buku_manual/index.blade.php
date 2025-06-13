@@ -8,15 +8,14 @@
 
         @if (\Storage::disk('public')->exists('manuals/buku-panduan-user-asb-sk.pdf'))
             <div class="mb-3">
-                <a href="{{ asset('storage/manuals/buku-panduan-user-asb-sk.pdf') }}" class="btn btn-success" target="_blank"
-                    download>
+                <a href="{{ asset('buku-panduan-user-asb-sk.pdf') }}" class="btn btn-success" target="_blank" download>
                     <i class="fas fa-download"></i> Unduh Buku Panduan
                 </a>
             </div>
 
             <div class="embed-responsive embed-responsive-4by3" style="min-height: 600px;">
-                <iframe class="embed-responsive-item w-100 h-100"
-                    src="{{ asset('storage/manuals/buku-panduan-user-asb-sk.pdf') }}" frameborder="0">
+                <iframe class="embed-responsive-item w-100 h-100" src="{{ asset('buku-panduan-user-asb-sk.pdf') }}"
+                    frameborder="0">
                 </iframe>
             </div>
         @else
